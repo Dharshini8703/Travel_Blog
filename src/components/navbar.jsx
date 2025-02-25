@@ -28,7 +28,7 @@ const Sidebar = styled(motion.div)(({ theme }) => ({
 }));
 
 const listItemStyle = {
-  padding: "10px 15px",
+  padding: "20px 15px",
   borderBottom: "1px solid #444",
   cursor: "pointer",
 };
