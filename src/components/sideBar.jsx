@@ -32,8 +32,9 @@ const Sidebar = () => {
           <div className="p-5 border-b">
             <Link to="/" className="flex items-center space-x-2" onClick={() => setIsOpen(false)}>
               <Compass className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold text-gray-800">தமிழ்நாடு Travels</span>
+              <span className="text-xl font-bold text-gray-800">தீரா உலா of Tamil Nadu</span>
             </Link>
+            <p className='text-xs text-gray-700 ml-7 mt-1'>Endless Journey of Tamil Nadu</p>
           </div>
 
           <nav className="flex-1 overflow-y-auto p-4">
@@ -86,7 +87,7 @@ const Sidebar = () => {
           </nav>
 
           <div className="p-4 border-t text-sm text-gray-500">
-            © 2025 தமிழ்நாடு Travels
+            © 2025 தீரா உலா of Tamil Nadu
           </div>
         </div>
       </aside>
