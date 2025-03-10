@@ -34,14 +34,13 @@ const Home = () => {
 
   return (
     <div className="max-w-7xl mx-auto">
+      {categoryParam && 
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
-          {categoryParam ? `${categoryParam} Destinations` : 'Explore Tamil Nadu'}
-        </h1>
-        <p className="text-gray-600">
-          Discover the beauty, culture, and heritage of Tamil Nadu
-        </p>
-      </div>
+        <h3 className="text-2xl font-bold text-gray-800 text-center mb-2">
+          { `${categoryParam} Destinations` }
+        </h3>
+      
+      </div>}
 
       {/* Search bar */}
       <div className="relative mb-8">
