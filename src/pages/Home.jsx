@@ -1,38 +1,74 @@
-import React from "react";
-import { motion } from "framer-motion";
-import "../styles/styles.css";
-import ImageCarousel from "../components/Carousel";
-import pic from "../assets/pic1.webp";
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Search } from 'lucide-react';
+import DestinationCard from '../components/DestinationCard';
+import { useDestinations } from '../context/DestinationsContext';
 
 const Home = () => {
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
+  const { destinations } = useDestinations();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredDestinations, setFilteredDestinations] = useState(destinations);
+
+  useEffect(() => {
+    let filtered = destinations;
+    
+    // Filter by category if present in URL
+    if (categoryParam) {
+      filtered = filtered.filter(dest => dest.category === categoryParam);
+    }
+    
+    // Filter by search term
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter(dest => 
+        dest.name.toLowerCase().includes(term) || 
+        dest.location.toLowerCase().includes(term) ||
+        dest.shortDescription.toLowerCase().includes(term)
+      );
+    }
+    
+    setFilteredDestinations(filtered);
+  }, [destinations, categoryParam, searchTerm]);
+
   return (
-    <section className="hero">
-      <motion.div 
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div style={{
-          backgroundImage: `url(${pic})`, 
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          minHeight: "70vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          color: "white",
-          padding: "0px"
-        }}>
-          <h1>Tamil Nadu's Precious Views & Timeless Vibes - A must-visit Destination</h1>
-          <h1>Welcome to my Travel Blog - Tamil Nadu</h1>
+    <div className="max-w-7xl mx-auto">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          {categoryParam ? `${categoryParam} Destinations` : 'Explore Tamil Nadu'}
+        </h1>
+        <p className="text-gray-600">
+          Discover the beauty, culture, and heritage of Tamil Nadu
+        </p>
+      </div>
+
+      {/* Search bar */}
+      <div className="relative mb-8">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Search className="h-5 w-5 text-gray-400" />
         </div>
-        <button className="shop-now" style={{ marginBottom: "50px" }}>Show Places</button>
-        <ImageCarousel />
-      </motion.div>
-    </section>
+        <input
+          type="text"
+          className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm"
+          placeholder="Search destinations..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      {filteredDestinations.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredDestinations.map((destination) => (
+            <DestinationCard key={destination.id} destination={destination} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-12">
+          <p className="text-gray-500 text-lg">No destinations found. Try a different search term or category.</p>
+        </div>
+      )}
+    </div>
   );
 };
 
